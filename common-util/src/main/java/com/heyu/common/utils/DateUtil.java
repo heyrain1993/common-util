@@ -64,15 +64,15 @@ public class DateUtil {
     /**
      * 字符串转换为日期
      * @param dateStr 日期字符串
-     * @param dateEnum 字符串格式
+     * @param format 字符串格式
      * @return
      */
-    public static Date parseStrToDate(String dateStr, DateEnum dateEnum) {
+    public static Date parseStrToDate(String dateStr, String format) {
         if(StringUtil.isEmpty(dateStr)){
             return null;
         }
         try {
-            return getDateFormat(dateEnum).parse(dateStr);
+            return getDateFormat(format).parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -86,31 +86,31 @@ public class DateUtil {
      * @param dateEnum 字符串格式
      * @return
      */
-    public static String formatDateToStr(Date date,DateEnum dateEnum){
-        return getDateFormat(dateEnum).format(date);
+    public static String formatDateToStr(Date date,String format){
+        return getDateFormat(format).format(date);
     }
 
     /**
      * 获取对应格式的DateFormat.SimpleDateFormat是线程不安全的原因：SimpleDateFormat类的父类DateFormat中包含成员属性Calendar,在多线程场景下，
      * 会发生资源共享，导致前后不一致问题。例如：calender.setTime(Date date),这句会导致后面的线程B把前面线程A设置的日期改成自己的,
      * 导致线程A的日期错误
-     * @param dateEnum 字符串格式
+     * @param format 字符串格式
      * @return
      */
-    private static DateFormat getDateFormat(DateEnum dateEnum) {
+    private static DateFormat getDateFormat(String format) {
         Map<String,DateFormat> map = threadLocal.get();
         DateFormat dateFormat = null;
         if (map == null){
             map = new HashMap<String, DateFormat>(FORMAT_SIZE);
-            dateFormat = new SimpleDateFormat(dateEnum.getValue());
-            map.put(dateEnum.getValue(),dateFormat);
+            dateFormat = new SimpleDateFormat(format);
+            map.put(format,dateFormat);
             threadLocal.set(map);
-        }else if(map.get(dateEnum.getValue()) == null){
-            dateFormat = new SimpleDateFormat(dateEnum.getValue());
-            map.put(dateEnum.getValue(),dateFormat);
+        }else if(map.get(format) == null){
+            dateFormat = new SimpleDateFormat(format);
+            map.put(format,dateFormat);
             threadLocal.set(map);
         }else {
-            dateFormat = map.get(dateEnum.getValue());
+            dateFormat = map.get(format);
         }
         return dateFormat;
     }

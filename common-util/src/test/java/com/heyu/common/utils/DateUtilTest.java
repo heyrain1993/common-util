@@ -78,7 +78,7 @@ public class DateUtilTest {
                 public void run() {
                     try {
                         //System.out.println(Thread.currentThread().getName()+ " " + simpleDateFormat.format(date));
-                        System.out.println(Thread.currentThread().getName()+ " " + DateUtil.formatDateToStr(date,DateEnum.FORMAT_TIME));
+                        System.out.println(Thread.currentThread().getName()+ " " + DateUtil.formatDateToStr(date,DateEnum.FORMAT_TIME.getValue()));
                         TimeUnit.SECONDS.sleep(1);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -91,7 +91,7 @@ public class DateUtilTest {
 
     @Test
     public void testFormat(){
-        System.out.println(DateUtil.formatDateToStr(new Date(), DateEnum.FORMAT_TIME));
-        System.out.println(DateUtil.parseStrToDate("2019-01-02 12:23:56",DateEnum.FORMAT_TIME));
+        System.out.println(DateUtil.formatDateToStr(new Date(), DateEnum.FORMAT_TIME.getValue()));
+        System.out.println(DateUtil.parseStrToDate("2019-01-02 12:23:56",DateEnum.FORMAT_TIME.getValue()));
     }
 }
